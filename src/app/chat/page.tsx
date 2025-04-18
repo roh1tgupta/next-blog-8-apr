@@ -28,6 +28,7 @@ export default function ChatPage() {
       }
     }
 
+    console.log(process.env.NEXT_PUBLIC_SOCKET_URL)
     const newSocket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
     setSocket(newSocket);
 

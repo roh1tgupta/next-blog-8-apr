@@ -6,8 +6,10 @@ const whitelistUrls = [
   'http://localhost:3000', // Example additional URL
 ];
 
+const PORT = 10000;
+
 console.log(whitelistUrls)
-const io = new Server(10000, {
+const io = new Server(PORT, {
   cors: {
     origin: whitelistUrls,
     methods: ['GET', 'POST'],
@@ -16,7 +18,7 @@ const io = new Server(10000, {
 
 initializeSocket(io)
 
-console.log('Socket.IO server running on port 3001');
+console.log(`Socket.IO server running on port ${PORT}`);
 
 setInterval(() => {
   const { heapUsed } = process.memoryUsage();
