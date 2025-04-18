@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "socket": "node --env-file=.env.local -r tsx ./socket-server.ts"
+    "socket": "node --env-file=.env.local -r tsx ./socket-server.ts",
+    "socket:prod": "tsx ./socket-server.ts"
   },
   "dependencies": {
     "@cloudinary/react": "^1.14.1",
