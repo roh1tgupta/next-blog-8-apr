@@ -28,7 +28,7 @@ export default function ChatPage() {
       }
     }
 
-    const newSocket: Socket = io();
+    const newSocket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
     setSocket(newSocket);
 
     if (storedUser && name && userId) {

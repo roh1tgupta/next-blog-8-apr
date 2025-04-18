@@ -16,7 +16,7 @@ export default function AdminChatClient() {
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
     setSocket(newSocket);
 
     newSocket.emit('admin-join');
