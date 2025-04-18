@@ -7,6 +7,27 @@ import { Message } from '@/types/chat';
 import { v4 as uuidv4 } from 'uuid';
 import Picker from 'emoji-picker-react';
 
+const getDeviceInfo = () => {
+  const ua = navigator.userAgent;
+  const isMobile = /Mobi|Android|iPhone|iPad/.test(ua);
+  let os = 'unknown';
+  let model = 'unknown';
+
+  if (/iPhone|iPad/.test(ua)) {
+    os = 'iOS';
+    model = /iPhone/.test(ua) ? 'iPhone' : 'iPad'; // iOS doesn't expose exact model
+  } else if (/Android/.test(ua)) {
+    os = 'Android';
+    const match = ua.match(/Android.*?\s([A-Za-z0-9\-]+)(?:\s|$|;)/);
+    model = match ? match[1] : 'Android Device'; // Extract model like SM-G960U
+  } else if (isMobile) {
+    os = 'other';
+    model = 'Mobile Device';
+  }
+
+  return { isMobile, os, model };
+};
+
 export default function ChatPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [name, setName] = useState('');
@@ -28,7 +49,6 @@ export default function ChatPage() {
       }
     }
 
-    console.log(process.env.NEXT_PUBLIC_SOCKET_URL)
     const newSocket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
     setSocket(newSocket);
 
@@ -36,7 +56,14 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          newSocket.emit('set-name', { name, userId, ip: data.ip });
+          const { isMobile, os, model } = getDeviceInfo();
+
+          const ipWithDevice = isMobile
+            ? `${os}_${model}`
+            : 'web';
+
+            console.log(ipWithDevice)
+          newSocket.emit('set-name', { name, userId, ip: `${data.ip}_${ipWithDevice}` });
         })
         .catch(() => {
           newSocket.emit('set-name', { name, userId, ip: 'unknown' });
@@ -97,7 +124,15 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: data.ip });
+          const { isMobile, os, model } = getDeviceInfo();
+
+          const ipWithDevice = isMobile
+            ? `${os}_${model}`
+            : 'web';
+
+
+            console.log(ipWithDevice)
+          socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: `${data.ip}_${ipWithDevice}` });
         })
         .catch(() => {
           socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: 'unknown' });
