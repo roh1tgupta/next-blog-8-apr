@@ -5,8 +5,9 @@ import io from 'socket.io-client';
 import { Socket } from 'socket.io-client';
 import { Message } from '@/types/chat';
 import { v4 as uuidv4 } from 'uuid';
-import Picker from 'emoji-picker-react';
+import ChatUI from './ChatUI';
 
+// Helper function to parse device info from user agent
 const getDeviceInfo = () => {
   const ua = navigator.userAgent;
   const isMobile = /Mobi|Android|iPhone|iPad/.test(ua);
@@ -57,12 +58,8 @@ export default function ChatPage() {
         .then((res) => res.json())
         .then((data) => {
           const { isMobile, os, model } = getDeviceInfo();
-
-          const ipWithDevice = isMobile
-            ? `${os}_${model}`
-            : 'web';
-
-            console.log(ipWithDevice)
+          const ipWithDevice = isMobile ? `${os}_${model}` : 'web';
+          console.log(ipWithDevice);
           newSocket.emit('set-name', { name, userId, ip: `${data.ip}_${ipWithDevice}` });
         })
         .catch(() => {
@@ -125,13 +122,8 @@ export default function ChatPage() {
         .then((res) => res.json())
         .then((data) => {
           const { isMobile, os, model } = getDeviceInfo();
-
-          const ipWithDevice = isMobile
-            ? `${os}_${model}`
-            : 'web';
-
-
-            console.log(ipWithDevice)
+          const ipWithDevice = isMobile ? `${os}_${model}` : 'web';
+          console.log(ipWithDevice);
           socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: `${data.ip}_${ipWithDevice}` });
         })
         .catch(() => {
@@ -150,128 +142,26 @@ export default function ChatPage() {
     }
   };
 
-  const onEmojiClick = (emojiObject: { emoji: string }) => {
-    setMessage((prev) => prev + emojiObject.emoji);
+  const handleEmojiClick = (emoji: string) => {
+    setMessage((prev) => prev + emoji);
     setShowEmojiPicker(false);
   };
 
-  const renderMessageText = (text: string) => {
-    const emojiRegex = /[\p{Emoji_Presentation}\p{Emoji}\u200D\uFE0F]/gu;
-    let lastIndex = 0;
-    const elements: React.ReactNode[] = [];
-    let match: RegExpExecArray | null;
-
-    while ((match = emojiRegex.exec(text)) !== null) {
-      const emoji = match[0];
-      const index = match.index;
-      if (index > lastIndex) {
-        elements.push(text.slice(lastIndex, index));
-      }
-      elements.push(<span key={index} className="emoji">{emoji}</span>);
-      lastIndex = index + emoji.length;
-    }
-    if (lastIndex < text.length) {
-      elements.push(text.slice(lastIndex));
-    }
-
-    return elements.length > 0 ? elements : text;
-  };
-
   return (
-    <div className="flex flex-col min-h-screen w-full px-2 bg-gray-100">
-      <style jsx>{`
-        .emoji {
-          font-size: 18px;
-        }
-      `}</style>
-      <h1 className="text-2xl font-bold text-primary mt-4 mb-4">
-        {name ? `Welcome ${name}` : 'Chat'}
-      </h1>
-      {!name ? (
-        <form onSubmit={handleSetName} className="flex flex-col space-y-4 w-full">
-          <div>
-            <label className="block text-lg font-medium mb-2">Your Name</label>
-            <input
-              type="text"
-              value={inputName}
-              onChange={(e) => setInputName(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-accent text-white px-4 py-2 rounded hover:bg-opacity-90 w-full"
-          >
-            Join Chat
-          </button>
-        </form>
-      ) : (
-        <div className="flex flex-col flex-grow space-y-4 w-full">
-          <p className="text-sm text-secondary flex items-center gap-2">
-            {/* Admin is {adminOnline ? 'online' : 'offline'} */}
-            <span
-              className={`inline-block w-2 h-2 rounded-full ${
-                adminOnline ? 'bg-green-500' : 'bg-red-500'
-              }`}
-            ></span>
-          </p>
-          <div className="flex-grow overflow-y-auto border p-4 rounded bg-gray-50">
-            {messages.map((msg: Message, idx: number) => (
-              <div
-                key={idx}
-                className={`mb-2 ${
-                  msg.sender === 'user' ? 'text-right' : 'text-left'
-                }`}
-              >
-                <span
-                  className={`inline-block p-2 rounded ${
-                    msg.sender === 'user'
-                      ? 'bg-accent text-white'
-                      : 'bg-primary text-white'
-                  }`}
-                >
-                  {renderMessageText(msg.text)}
-                </span>
-                <p className="text-xs text-gray-500">
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="relative">
-            {showEmojiPicker && (
-              <div ref={emojiPickerRef} className="absolute bottom-14 left-0 z-10 w-full">
-                <Picker onEmojiClick={onEmojiClick} />
-              </div>
-            )}
-            <form onSubmit={handleSendMessage} className="flex space-x-2 w-full">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="w-full p-2 border rounded pr-10"
-                  placeholder="Type your message..."
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowEmojiPicker((prev) => !prev)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  😊
-                </button>
-              </div>
-              <button
-                type="submit"
-                className="bg-accent text-white px-4 py-2 rounded hover:bg-opacity-90"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+    <ChatUI
+      name={name}
+      inputName={inputName}
+      message={message}
+      messages={messages}
+      adminOnline={adminOnline}
+      showEmojiPicker={showEmojiPicker}
+      emojiPickerRef={emojiPickerRef}
+      onSetName={handleSetName}
+      onInputNameChange={(e) => setInputName(e.target.value)}
+      onMessageChange={(e) => setMessage(e.target.value)}
+      onSendMessage={handleSendMessage}
+      onEmojiClick={handleEmojiClick}
+      onToggleEmojiPicker={() => setShowEmojiPicker((prev) => !prev)}
+    />
   );
 }
