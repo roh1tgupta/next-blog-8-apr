@@ -7,7 +7,7 @@ const whitelistUrls = [
 ];
 
 console.log(whitelistUrls)
-const io = new Server(3001, {
+const io = new Server(10000, {
   cors: {
     origin: whitelistUrls,
     methods: ['GET', 'POST'],
