@@ -1,9 +1,15 @@
 import { Server } from 'socket.io';
 import { initializeSocket } from './src/app/socket-server';
 
+const whitelistUrls = [
+  process.env.APP_URL || '', // First URL
+  'http://localhost:3000', // Example additional URL
+];
+
+console.log(whitelistUrls)
 const io = new Server(3001, {
   cors: {
-    origin: process.env.APP_URL,
+    origin: whitelistUrls,
     methods: ['GET', 'POST'],
   },
 });
