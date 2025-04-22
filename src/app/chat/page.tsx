@@ -10,6 +10,7 @@ import ChatUI from './ChatUI';
 // Helper function to parse device info from user agent
 const getDeviceInfo = () => {
   const ua = navigator.userAgent;
+  const { downlink, rtt, effectiveType } = navigator.connection || {};
   const isMobile = /Mobi|Android|iPhone|iPad/.test(ua);
   let os = 'unknown';
   let model = 'unknown';
@@ -24,9 +25,12 @@ const getDeviceInfo = () => {
   } else if (isMobile) {
     os = 'other';
     model = 'Mobile Device';
+  } else {
+    os = '';
+    model = 'web';
   }
 
-  return { isMobile, os, model };
+  return { isMobile, deviceInfo: `${os}_${model}_${downlink}_${rtt}_${effectiveType}` };
 };
 
 export default function ChatPage() {
@@ -57,8 +61,8 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          const { isMobile, os, model } = getDeviceInfo();
-          const ipWithDevice = isMobile ? `${os}_${model}` : 'web';
+          const { isMobile, deviceInfo } = getDeviceInfo();
+          const ipWithDevice = deviceInfo;
           console.log(ipWithDevice);
           newSocket.emit('set-name', { name, userId, ip: `${data.ip}_${ipWithDevice}` });
         })
@@ -121,8 +125,8 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          const { isMobile, os, model } = getDeviceInfo();
-          const ipWithDevice = isMobile ? `${os}_${model}` : 'web';
+          const { isMobile, deviceInfo } = getDeviceInfo();
+          const ipWithDevice = deviceInfo;
           console.log(ipWithDevice);
           socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: `${data.ip}_${ipWithDevice}` });
         })
