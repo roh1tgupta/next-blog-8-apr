@@ -126,7 +126,7 @@ export default function ChatUI({
                 }`}
               ></span>
             </p>
-            <div className="flex-grow overflow-y-auto border p-4 rounded bg-gray-50 mb-4">
+            <div className="flex-grow overflow-y-auto border p-4 rounded bg-gray-50 mb-4 content-end">
               {messages.map((msg: Message, idx: number) => (
                 <div
                   key={idx}
