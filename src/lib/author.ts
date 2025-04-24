@@ -33,7 +33,7 @@ export const authorInfo: AuthorInfo = {
   company: 'Nagarro',
   experience: '9+ years',
   summary:
-    'The author is Rohit Gupta, a Staff Engineer at Nagarro with over 9 years of experience in developing application software. He specializes in JavaScript, React.js, Redux, Node.js, Angular, Express, HTML, SCSS (CSS), Jest, MySQL, and AWS, with domain knowledge in e-commerce, media, and finance. He has extensive exposure to Agile methodologies and currently works with a tech stack that includes React.js, Node.js, Express, REST, GraphQL, SSO (Single Sign-On), Auth0, Jira, and Bitbucket.',
+    'The author is, a Staff Engineer at an MNC with over 10 years of experience in developing application software. He specializes in JavaScript, React.js, Redux, Node.js, Angular, Express, HTML, SCSS (CSS), Jest, MySQL, and AWS, with domain knowledge in e-commerce, media, and finance. He has extensive exposure to Agile methodologies and currently works with a tech stack that includes React.js, Node.js, Express, REST, GraphQL, SSO (Single Sign-On), Auth0, Jira, and Bitbucket.',
   education: {
     degree: 'Bachelor of Technology',
     field: 'Electronics and Communications',

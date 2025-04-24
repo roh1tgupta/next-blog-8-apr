@@ -6,6 +6,7 @@ import { Socket } from 'socket.io-client';
 import { Message } from '@/types/chat';
 import { v4 as uuidv4 } from 'uuid';
 import ChatUI from './ChatUI';
+import { setCookie } from '@/lib/utils';
 
 // Helper function to parse device info from user agent
 const getDeviceInfo = () => {
@@ -89,6 +90,7 @@ export default function ChatPage() {
   }, [name, userId]);
 
   useEffect(() => {
+    setCookie('landingPage', 'chat')
     const handleClickOutside = (event: MouseEvent) => {
       if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
         setShowEmojiPicker(false);
