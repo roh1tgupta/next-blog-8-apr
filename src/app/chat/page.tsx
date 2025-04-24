@@ -62,7 +62,7 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          const { isMobile, deviceInfo } = getDeviceInfo();
+          const { deviceInfo } = getDeviceInfo();
           const ipWithDevice = deviceInfo;
           console.log(ipWithDevice);
           newSocket.emit('set-name', { name, userId, ip: `${data.ip}_${ipWithDevice}` });
@@ -127,7 +127,7 @@ export default function ChatPage() {
       fetch('https://api.ipify.org?format=json')
         .then((res) => res.json())
         .then((data) => {
-          const { isMobile, deviceInfo } = getDeviceInfo();
+          const { deviceInfo } = getDeviceInfo();
           const ipWithDevice = deviceInfo;
           console.log(ipWithDevice);
           socket?.emit('set-name', { name: trimmedName, userId: newUserId, ip: `${data.ip}_${ipWithDevice}` });
