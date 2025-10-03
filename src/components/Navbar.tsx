@@ -26,7 +26,7 @@ export default function Navbar({isAdmin}: {isAdmin: boolean}) {
             Create
           </Link>}
           <Link
-            href="/blogs/about"
+            href="/about-the-author"
             className="text-lg font-medium hover:text-accent transition-colors duration-300 hover:border-b-2 hover:border-accent pb-1"
           >
             About the Author

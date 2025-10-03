@@ -12,7 +12,8 @@ export interface AuthorInfo {
   title: string;
   company: string;
   experience: string;
-  summary: string;
+  summary_one: string;
+  summary_two: string;
   education: {
     degree: string;
     field: string;
@@ -25,15 +26,18 @@ export interface AuthorInfo {
     tools: string[];
   };
   projects: Project[];
+  email: string;
 }
 
 export const authorInfo: AuthorInfo = {
   name: 'Rohit Gupta',
   title: 'Staff Engineer',
   company: 'Nagarro',
+  email: 'rohitgupta887@gmail.com',
   experience: '9+ years',
-  summary:
-    'The author is, a Staff Engineer at an MNC with over 10 years of experience in developing application software. He specializes in JavaScript, React.js, Redux, Node.js, Angular, Express, HTML, SCSS (CSS), Jest, MySQL, and AWS, with domain knowledge in e-commerce, media, and finance. He has extensive exposure to Agile methodologies and currently works with a tech stack that includes React.js, Node.js, Express, REST, GraphQL, SSO (Single Sign-On), Auth0, Jira, and Bitbucket.',
+  summary_one:
+    'The author is, a Staff Engineer at an MNC with over 10 years of experience in developing application software. He specializes in JavaScript, React.js, Redux, Node.js, Angular, Express, HTML, SCSS (CSS), Jest, MySQL, and AWS, with domain knowledge in e-commerce, media, and finance.',
+  summary_two: ' He has extensive exposure to Agile methodologies and currently works with a tech stack that includes React.js, Node.js, Express, REST, GraphQL, SSO (Single Sign-On), Auth0, Jira, and Bitbucket.',
   education: {
     degree: 'Bachelor of Technology',
     field: 'Electronics and Communications',
